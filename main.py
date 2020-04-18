@@ -35,8 +35,8 @@ data['date'] = data['date'].map(dateMapper)
 data['logcases'] = np.log(data['cases'])
 data['logcases'] = data['logcases'].map(lambda val: 0 if val == float('-inf') else val)
 
-_, test = train_test_split(data, test_size=0.1) 
-train = data
+train, test = train_test_split(data, test_size=0.1) 
+
 
 features = ['date', 'state']
 
@@ -48,7 +48,7 @@ testingLabels = test['logcases']
 
 print("Fitting Model...")
 
-clf = svm.LinearSVR(C=0.1)
+clf = svm.LinearSVR(C=0.1, max_iter=10000)
 clf.fit(trainingFeatures, trainingLabels)
 
 print("Estimating...")
@@ -58,12 +58,12 @@ data = pd.DataFrame(testingFeatures)
 data['logcases'] = predictions
 data['cases'] = np.exp(predictions)
 
-caliP = data.loc[data['state'] == stateToId('California')]
-caliP = caliP.sort_values(by='date')
-plt.plot( caliP['date'], caliP['cases'],)
-plt.ylabel('cases')
-plt.xlabel('days since jan 21')
-plt.show()
+# caliP = data.loc[data['state'] == stateToId('California')]
+# caliP = caliP.sort_values(by='date')
+# plt.plot( caliP['date'], caliP['cases'],)
+# plt.ylabel('cases')
+# plt.xlabel('days since jan 21')
+# plt.show()
 
 
 
@@ -72,3 +72,14 @@ print("Result!")
 err = mean_squared_error(testingLabels, predictions)
 
 print("mse", err)
+
+daysSince = input("Days since Jan 21: ")
+state = input("State: ")
+
+state = state.capitalize()
+
+ft = [int(daysSince), stateToId(state.capitalize())]
+
+ans = clf.predict([ft])
+
+print("Estimated cases: ", np.exp(ans[0]))
