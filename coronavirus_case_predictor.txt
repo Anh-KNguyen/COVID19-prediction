@@ -1,0 +1,14 @@
+Coronavirus Case Predictor
+
+Use different markers / attributes from around the US and relate them to Coronavirus Case Count
+
+• Learning Model can be created using Decision Trees, Induction Learning or Neural Networks
+• Model can be used to predict future case count.
+
+Input Feature-Vector:
+– Date
+– Location
+– Previous Case Count
+– etc., other factors…
+
+• Output: New Case Count
