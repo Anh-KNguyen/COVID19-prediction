@@ -21,9 +21,10 @@ print("Loading training data")
 data = pd.read_csv('./covid-19-data/us-states.csv')
 
 stateMap = pd.Series(data['state'].unique()).tolist()
+stateMap = list(map(lambda v: v.lower(), stateMap))
 
 def stateToId(state: str) -> int:
-    return stateMap.index(state)
+    return stateMap.index(state.lower())
 
 def idToState(id: int) -> str:
     return stateMap[id]
@@ -76,9 +77,7 @@ print("mse", err)
 daysSince = input("Days since Jan 21: ")
 state = input("State: ")
 
-state = state.capitalize()
-
-ft = [int(daysSince), stateToId(state.capitalize())]
+ft = [int(daysSince), stateToId(state.lower())]
 
 ans = clf.predict([ft])
 
